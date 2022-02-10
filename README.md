@@ -29,7 +29,7 @@ Create a web application using a technology stack that meets Cloud-Native Web Ap
 - To **debug**-> right click project -> debug as Spring boot app
 
 **Output**
-- Once the application is started you can access http://localhost:8080/healthz through postman
+- Once the application is started you can access http://localhost:8080/healthz through postman or web browser
 
 **Screenshot**-
 ![Screenshot (47)](https://user-images.githubusercontent.com/90646523/153288772-eec38734-bd45-479a-bc3f-fd5383faf941.png)
