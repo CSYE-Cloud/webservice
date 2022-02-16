@@ -17,7 +17,7 @@ class DemoApplicationTests {
 	void test() {
 	assignment1Controller = new Assignment1Controller();
 	ResponseEntity<String> responseInvoiceResponseEntity = assignment1Controller.getMethodName() ;
-	assertEquals("200 OK",responseInvoiceResponseEntity.getStatusCode().toString());
+	assertEquals("400",responseInvoiceResponseEntity.getStatusCode().toString());
 	}
 
 }
