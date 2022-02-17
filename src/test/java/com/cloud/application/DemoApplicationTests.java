@@ -7,19 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
+import com.cloud.application.controller.Assignment1Controller;
+
 //import com.cloud.application.Assignment1Controller;
 
 @SpringBootTest
 class DemoApplicationTests {
 
-//	@Autowired
-//	Assignment1Controller assignment1Controller;
-//	
-//	@Test
-//	void test() {
-//	assignment1Controller = new Assignment1Controller();
-//	ResponseEntity<String> responseInvoiceResponseEntity = assignment1Controller.getMethodName() ;
-//	assertEquals("200 OK",responseInvoiceResponseEntity.getStatusCode().toString());
-//	}
+	@Autowired
+	Assignment1Controller assignment1Controller;
+	
+	@Test
+	void test() {
+	assignment1Controller = new Assignment1Controller();
+	ResponseEntity<String> responseInvoiceResponseEntity = assignment1Controller.getMethodName() ;
+	assertEquals("200 OK",responseInvoiceResponseEntity.getStatusCode().toString());
+	}
 
 }
