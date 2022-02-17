@@ -24,33 +24,6 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class Security extends WebSecurityConfigurerAdapter{
 	
-//	@Autowired
-//	DataSource dataSource;
-//	
-//	
-//	@Bean
-//	public BCryptPasswordEncoder passwordEncoder() {
-//	System.out.println("in password encoder");
-//		//return NoOpPasswordEncoder.getInstance();
-//		return new BCryptPasswordEncoder();
-//	}
-//	// Enable jdbc authentication
-//	@Autowired
-//	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder());
-//	}
-//	
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//	    web.ignoring().antMatchers("/v1/user/**").antMatchers("/v2/user/**");
-//	}				
-//	
-//	@Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//            .antMatchers("/v1/verifyUserEmail").permitAll();
-//            
-//    }
 	@Autowired
 	  private UserDetailsService userDetailsService;
 

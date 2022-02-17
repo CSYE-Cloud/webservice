@@ -58,7 +58,7 @@ public class User implements UserDetails{
 	
 	@Email(message="Email not valid") @NotEmpty
 	@Column(name = "username", unique = true, nullable = false)
-     @NotNull(message="Email cannot be missing or empty")
+    @NotNull(message="Email cannot be missing or empty")
     private String  username;
     
 	@CreationTimestamp

@@ -83,7 +83,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "user/self", method = RequestMethod.GET)
-	public UserRegistrationResponse register_user(Authentication authentication, Principal principal) {
+	public UserRegistrationResponse displayUser(Authentication authentication, Principal principal) {
 		String name = principal.getName();
 		User users = userService.loadUserByUsername(name);
 		UserRegistrationResponse userResponse = new UserRegistrationResponse();
