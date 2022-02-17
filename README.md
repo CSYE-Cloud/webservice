@@ -33,3 +33,14 @@ Create a web application using a technology stack that meets Cloud-Native Web Ap
 
 **Screenshot**-
 ![Screenshot (47)](https://user-images.githubusercontent.com/90646523/153288772-eec38734-bd45-479a-bc3f-fd5383faf941.png)
+
+To **view** the users using the basic authentication(using GET request) :
+![image](https://user-images.githubusercontent.com/90646523/154387321-04cd296a-67ad-4d6d-867b-01a3117d8d8b.png)
+
+To **add** new user we do not need any authentication and can be add as follows(using POST request):
+![image](https://user-images.githubusercontent.com/90646523/154387558-433f2d8b-80b4-447c-889f-477cb703f7a7.png)
+
+To **update** any user we need basic authentication as follows(using PUT request): 
+![image](https://user-images.githubusercontent.com/90646523/154387774-b56308bb-db33-4458-a030-3bab81493013.png)
+204 http status denoted- user updated successfully
+
