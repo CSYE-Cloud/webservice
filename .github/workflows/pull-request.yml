@@ -30,7 +30,7 @@ jobs:
 #       - name: Run Tests
 #         #run: mvn -B test
 #         run: mvn verify
-    test:
+    tests:
       runs-on: ubuntu-latest
       name: Running tests
       needs: compile
