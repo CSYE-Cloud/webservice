@@ -5,7 +5,9 @@ on:
   #Manually trigger workflow runs
   workflow_dispatch:
   #Trigger the workflow on push from the main branch
-  push: [a4]
+  push: 
+    branches:
+        -a4
   pull_request:
     branches:
       - main
