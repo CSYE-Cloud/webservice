@@ -1,0 +1,58 @@
+{
+    "variables" : {
+        "region" : "us-east-1",
+        "aws_access_key_id": "{{ env `AWS_ACCESS_KEY_ID` }}",
+        "aws_secret_access_key": "{{ env `AWS_SECRET_ACCESS_KEY` }}",
+        "source_ami" : "ami-033b95fb8079dc481" 
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "default",
+            "region" : "us-east-1",
+            "access_key": "AKIA2XKC6NOAADDD4U6M",
+            "secret_key": "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",
+            "instance_type" : "t2.micro",
+            "source_ami" : "ami-033b95fb8079dc481",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "custom-ami_{{timestamp}}",
+            "ami_description" : "Amazon Machine Image",
+			"ami_users": ["737264167808"],
+            "run_tags" : {
+                "Name" : "packer-builder"
+            },
+            "ami_block_device_mappings": [
+              {
+                "delete_on_termination": true,
+                "device_name": "/dev/sda1",
+                "volume_size": 60,
+                "volume_type": "gp2"
+              }
+            ],
+            "tags" : {
+                "Tool" : "Packer",
+                "Author" : "user",
+                "Environment" : "dev"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type": "shell",
+            "inline": ["sleep 30",
+			"sudo yum -y install java-11",
+			"sudo yum -y install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm",
+			"echo 'Install epel'",
+			"sudo amazon-linux-extras install epel",
+			"echo 'Install community server'",
+			"sudo yum -y install mysql-community-server",
+			"sudo systemctl enable --now mysqld",
+			"systemctl status mysqld",
+			"echo 'here'",
+			"passwords=$(sudo grep 'temporary password' /var/log/mysqld.log | awk {'print $13'})",
+			"mysql --connect-expired-password -u root -p$passwords -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'Garima@1';\"",
+			"mysql -u root -pGarima@1 -e \"create database user;\""
+			]
+        }
+    ]
+}
