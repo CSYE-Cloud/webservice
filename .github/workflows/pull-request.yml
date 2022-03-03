@@ -27,7 +27,7 @@ jobs:
           mvn -B package --file pom.xml
             cd target
             ls --all
-            cp *.jar ami
+            cp *.jar ./ami
             cd ..
             cd ami
             ls --all
