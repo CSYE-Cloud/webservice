@@ -72,9 +72,9 @@
 		{
 			"type": "shell",
 			"inline":[
-			"sudo cp /webservice.service /etc/systemd/system",
-			"sudo systemctl start webservice.service",
-			"sudo systemctl enable webservice.service",
+			"sudo cp /webapp.service /etc/systemd/system",
+			"sudo systemctl start webapp.service",
+			"sudo systemctl enable webapp.service"
 			]
 					}
     ]
