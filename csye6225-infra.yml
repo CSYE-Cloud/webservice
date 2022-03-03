@@ -43,7 +43,7 @@ Parameters:
 
   AMIImage:
     Type: String
-    Default: ami-0a49f5ccd68c1f672
+    Default: ami-033b95fb8079dc481
     Description: Assignment4
 
 Resources:
@@ -191,7 +191,7 @@ Resources:
       Properties:
         ImageId: !Ref AMIImage
         InstanceType: t2.micro
-        KeyName: Pri
+        KeyName: GarimaChoudhary
         NetworkInterfaces:
         - AssociatePublicIpAddress: "true"
           DeviceIndex: "0"
