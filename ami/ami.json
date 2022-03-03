@@ -5,8 +5,6 @@
         "aws_secret_access_key": "{{ env `AWS_SECRET_ACCESS_KEY` }}",
         "source_ami" : "ami-033b95fb8079dc481" ,
 		"github_repo" : "{{env 'GITHUB_REPO_PATH'}}"
-
-}
     },
     "builders" : [
         {
