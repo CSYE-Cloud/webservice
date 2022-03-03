@@ -65,8 +65,6 @@
 			"passwords=$(sudo grep 'temporary password' /var/log/mysqld.log | awk {'print $13'})",
 			"mysql --connect-expired-password -u root -p$passwords -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'Garima@1';\"",
 			"mysql -u root -pGarima@1 -e \"create database cloud;\"",
-			"cd ~",
-			"cd /etc/systemd/system"
 			]
         },
 		{
@@ -74,7 +72,9 @@
 			"inline":[
 			"sudo cp webapp.service /etc/systemd/system",
 			"sudo systemctl start webapp.service",
-			"sudo systemctl enable webapp.service"
+			"sudo systemctl enable webapp.service",
+			"sudo systemctl restart webapp.service",
+			"sudo systemctl status webapp.service"
 			]
 					}
     ]
