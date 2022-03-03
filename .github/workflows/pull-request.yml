@@ -28,8 +28,7 @@ jobs:
 # COPYING JARS
      - name: Copy jar
        run: |
-          mvn -B package --file pom.xml
-          mvn clean install
+          mvn clean install -U
           mkdir temp && cp target/demo-0.0.1-SNAPSHOT.jar temp
           cp temp/*.jar ami
           cd ami && ls --all
