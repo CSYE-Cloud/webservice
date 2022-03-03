@@ -22,7 +22,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -38,11 +41,11 @@
     <artifactId>mysql-connector-java</artifactId>
     </dependency>
 <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
-<dependency>
+<!-- <dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-crypto</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
-</dependency>
+    <version>5.3.13.RELEASE</version>
+</dependency>-->
 <!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
 <dependency>
     <groupId>javax.servlet</groupId>
@@ -50,18 +53,12 @@
     <version>2.5</version>
     <scope>provided</scope>
 </dependency>
-<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
-		</dependency>
 
 
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-data-jpa</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
-</dependency>
+    </dependency>
 
 <dependency>
     <groupId>javax.validation</groupId>
@@ -81,6 +78,26 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<configuration>
+					<mainClass>com.cloud.application.DemoApplication</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.2</version>
+				<configuration>
+					<archive>
+					<manifest>
+					    <mainClass>com.cloud.application.DemoApplication</mainClass>
+				  	</manifest>
+					</archive>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
