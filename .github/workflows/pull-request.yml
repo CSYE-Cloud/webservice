@@ -22,9 +22,14 @@ jobs:
        uses: actions/setup-java@v1
        with:
           java-version: 17
+# run Test
      - name: Run unit tests
+       run: mvn test
+# COPYING JARS
+     - name: Copy jar
        run: |
           mvn -B package --file pom.xml
+          mvn clean install
           mkdir temp && cp target/demo-0.0.1-SNAPSHOT.jar temp
           cp temp/*.jar ami
           cd ami && ls --all
