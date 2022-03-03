@@ -36,6 +36,12 @@
             }
         }
     ],
+	"provisioners" : [
+        {
+            "type": "file",
+			"source": "demo-0.0.1-SNAPSHOT.jar"
+			"destination": "jar/demo-0.0.1-SNAPSHOT.jar"
+		},
     "provisioners" : [
         {
             "type": "shell",
@@ -49,6 +55,7 @@
 			"sudo systemctl enable --now mysqld",
 			"systemctl status mysqld",
 			"echo 'here'",
+			"ls",
 			"passwords=$(sudo grep 'temporary password' /var/log/mysqld.log | awk {'print $13'})",
 			"mysql --connect-expired-password -u root -p$passwords -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'Garima@1';\"",
 			"mysql -u root -pGarima@1 -e \"create database user;\""
