@@ -16,7 +16,7 @@
             "secret_key": "{{ user `AWS_SECRET_ACCESS_KEY` }}",
 			"subnet_id" : "{{ user `SUBNET_ID` }}",
             "instance_type" : "t2.micro",
-            "source_ami" : "{{ user `SOURCE_AMI` }}",
+            "source_ami" : "ami-033b95fb8079dc481",
             "ssh_username" : "ec2-user",
             "ami_name" : "custom-ami_{{timestamp}}",
             "ami_description" : "Amazon Machine Image",
