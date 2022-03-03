@@ -27,7 +27,7 @@ jobs:
           mvn -B package --file pom.xml
             cd target
             ls --all
-            cp *.jar ./ami
+            cp *.jar ami
             cd ..
             cd ami
             ls --all
@@ -40,6 +40,7 @@ jobs:
            AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
            AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
            AWS_DEFAULT_REGION: us-east-1
+           GITHUB_REPO_PATH: ${{ github.workspace }}
 
 #     name: Unit tests
 #     #Run on Ubuntu using the latest version

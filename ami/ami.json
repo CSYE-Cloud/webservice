@@ -3,7 +3,10 @@
         "region" : "us-east-1",
         "aws_access_key_id": "{{ env `AWS_ACCESS_KEY_ID` }}",
         "aws_secret_access_key": "{{ env `AWS_SECRET_ACCESS_KEY` }}",
-        "source_ami" : "ami-033b95fb8079dc481" 
+        "source_ami" : "ami-033b95fb8079dc481" ,
+		"github_repo" : "{{env 'GITHUB_REPO_PATH'}}"
+
+}
     },
     "builders" : [
         {
@@ -39,7 +42,7 @@
 	"provisioners" : [
         {
             "type": "file",
-			"source": "target/demo-0.0.1-SNAPSHOT.jar",
+			"source": "${var.github_repo}/target/demo-0.0.1-SNAPSHOT.jar",
 			"destination": "jar/demo-0.0.1-SNAPSHOT.jar"
 		}
 	,
