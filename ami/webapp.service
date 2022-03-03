@@ -4,8 +4,7 @@ After=syslog.target
 
 [Service]
 User=ec2-user
-ExecStart=/bin/bash -c '/usr/bin/java -jar demo-0.0.1-SNAPSHOT.jar'
-SuccessExitStatus=143
+ExecStart=/usr/bin/java -jar home/ec2-user/demo-0.0.1-SNAPSHOT.jar
 RemainAfterExit=yes
 Restart=always
 RestartSec=5
