@@ -64,7 +64,7 @@
 			"ls",
 			"passwords=$(sudo grep 'temporary password' /var/log/mysqld.log | awk {'print $13'})",
 			"mysql --connect-expired-password -u root -p$passwords -e \"ALTER USER 'root'@'localhost' IDENTIFIED BY 'Garima@1';\"",
-			"mysql -u root -pGarima@1 -e \"create database cloud;\"",
+			"mysql -u root -pGarima@1 -e \"create database cloud;\""
 			]
         },
 		{
