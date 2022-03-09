@@ -45,7 +45,7 @@
 	,
 	{
             "type": "file",
-			"source": "webapp"
+			"source": "webapp.service",
 			"destination": "webapp.service"
 		},
         {
