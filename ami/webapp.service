@@ -2,12 +2,11 @@
 Description=CSYE6225-GC-webapp
 After=syslog.target
 
-[Service]
-User=ec2-user
-ExecStart=/usr/bin/java -jar home/ec2-user/demo-0.0.1-SNAPSHOT.jar
-RemainAfterExit=yes
-Restart=always
-RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
+
+[Service]
+User=ec2-user
+ExecStart=/usr/bin/java -jar home/ec2-user/demo-0.0.1-SNAPSHOT.jar
+
