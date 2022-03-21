@@ -7,7 +7,7 @@ Create a web application using a technology stack that meets Cloud-Native Web Ap
 
 
 **Spring Boot Application**
--Creating a simple Restful API and writing a JUnit test case to check the HTTP status code=200 
+-Creating a simple Restful API and writing a JUnit test case to check the HTTP status code=200
 
 
 **Prerequisite and Technology-** 
