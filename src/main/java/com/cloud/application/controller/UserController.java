@@ -65,7 +65,6 @@ public class UserController {
 				throw new BadRequestException();
 			}
 
-			// check if already exists
 			Optional<User> u = userRepository.findByUsername(user.getUsername());
 
 			System.out.println("checking if user is present");
@@ -149,10 +148,6 @@ public class UserController {
 				    img = new Image(profilePic.getOriginalFilename(), user.getId(), url);
 				    imageRepo.save(img);
 					
-					//return new ResponseEntity<>(tutorialData.get(), HttpStatus.OK);
-//				} else {
-//					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//				}
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}	
@@ -170,28 +165,14 @@ public class UserController {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			}
 
-//			String pair = new String(Base64.decodeBase64(upd.substring(6)));
-//			String userName = pair.split(":")[0];
-//			String password = pair.split(":")[1];
-
 			System.out.println("Setting for get request");
-//			multiTenantManager.setCurrentTenant("get");
 			
 			Optional<User> tutorialData = userRepository.findByUsername(upd);// AndPassword(userName, encodedPass);
 			Optional<Image> img=null;
 			if (tutorialData.isPresent()) {
 
-//				if (bCryptPasswordEncoder.matches(password, tutorialData.get().getPassword())) {
-
-					//check if verified user
-//					if(!tutorialData.get().isVerified()) {
-//						System.out.println("User is not yet verified");
-//						return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//					}
-					
 					User user = tutorialData.get();
 				    img = imageRepo.findByUserId(user.getId());
-//				    statsd.recordExecutionTime("DB Response Time - Image record get", System.currentTimeMillis() - startTime2);
 				    if (img.isPresent()) {
 				  
 				    	return new ResponseEntity<>(img.get(), HttpStatus.OK);
@@ -199,9 +180,6 @@ public class UserController {
 				    else {
 						return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 					}
-//				} else {
-//					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//				}
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
@@ -213,32 +191,15 @@ public class UserController {
 	  public ResponseEntity<String> deleteImage(Authentication authentication, Principal principal)
 			  throws Exception {
 				System.out.println("In delete /user/self/pic");
-		 //check user credentials and get userid
 		 String upd = principal.getName();
 			if (upd == null || upd.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			}
 
-//			String pair = new String(Base64.decodeBase64(upd.substring(6)));
-//			String userName = pair.split(":")[0];
-//			String password = pair.split(":")[1];
-
-			System.out.println("Setting for delete request");
-//			multiTenantManager.setCurrentTenant("all");
-			
 			Optional<User> tutorialData = userRepository.findByUsername(upd);// AndPassword(userName, encodedPass);
 			Optional<Image> img=null;
 			if (tutorialData.isPresent()) {
-
-//				if (bCryptPasswordEncoder.matches(password, tutorialData.get().getPassword())) {
-
 					
-					//check if verified user
-//					if(!tutorialData.get().isVerified()) {
-//						System.out.println("User is not yet verified");
-//						return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//					}
-//										
 					User user = tutorialData.get();
 										
 				    img = imageRepo.findByUserId(user.getId());
@@ -248,14 +209,11 @@ public class UserController {
 				    	String result = service.deleteFileFromS3Bucket(img.get().getUrl(),user.getId());
 				    	imageRepo.delete(img.get());
 				    	
-				    	return new ResponseEntity<>(result, HttpStatus.OK);
+				    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 				    }
 				    else {
 						return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 					}
-//				} else {
-//					return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//				}
 			} else {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
