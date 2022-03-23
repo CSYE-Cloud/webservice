@@ -55,7 +55,6 @@ public class Service {
 	        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
 	        System.out.println("fileName to delete from service: "+bucketName + "/"+fileName);
 	        amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, userId+"/"+fileName));
-//	        statsd.recordExecutionTime("S3 Response Time - Delete pic File", System.currentTimeMillis() - startTime);
 	        return "Successfully deleted";
 	    }
 	
