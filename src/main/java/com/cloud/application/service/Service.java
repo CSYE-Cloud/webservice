@@ -33,12 +33,10 @@ public class Service {
 	     * @return String
 	     */
 	    public String uploadFile(String keyName, MultipartFile file) {
-	        long startTime = System.currentTimeMillis();
 	        try {
 	            ObjectMetadata metadata = new ObjectMetadata();
 	            metadata.setContentLength(file.getSize());
 	            amazonS3Client.putObject(bucketName, keyName, file.getInputStream(), metadata);
-//	            statsd.recordExecutionTime("S3 Response Time - Delete File", System.currentTimeMillis() - startTime);
 	            return bucketName;
 	        } catch (IOException ioe) {
 	            logger.error("IOException: " + ioe.getMessage());
@@ -49,13 +47,11 @@ public class Service {
 	            logger.info("AmazonClientException Message: " + clientException.getMessage());
 	            throw clientException;
 	        }
-//	        statsd.recordExecutionTime("S3 Response Time - Upload pic File", System.currentTimeMillis() - startTime);
 	        return "File not uploaded: " + keyName;
 	    }
 
 	    
 	    public String deleteFileFromS3Bucket(String fileUrl, String userId) {
-	        long startTime = System.currentTimeMillis();
 	        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
 	        System.out.println("fileName to delete from service: "+bucketName + "/"+fileName);
 	        amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, userId+"/"+fileName));

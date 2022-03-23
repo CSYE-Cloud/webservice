@@ -1,0 +1,45 @@
+
+#Workflow name
+name: push-merge
+on:
+  #Manually trigger workflow runs
+  workflow_dispatch:
+  #Trigger the workflow on push from the main branch
+  push: 
+    branches:
+      - main
+  # pull_request:
+  #   branches:
+  #     - main
+jobs:
+  #Test's job
+  tests:
+    runs-on: ubuntu-latest
+    name: Running tests
+    steps:
+      # - uses: actions/checkout@v2
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v1
+      #   with:
+      #     java-version: 17
+      # - name: Run Unit tests
+      #   run: mvn test
+# COPYING JARS
+      - name: Copy jar
+        run: |
+           mvn -B package --file pom.xml
+           mvn clean install
+           mkdir garimac && cp target/demo-0.0.1-SNAPSHOT.jar garimac
+           cp garimac/*.jar ami
+           cd ami && ls --all
+
+      - name: Packer build
+        uses: ExitoLab/packer_build_action_aws@v0.2.10
+        with:
+          templateFile: 'ami.json'
+          workingDir: 'ami'
+        env:
+           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
+           AWS_DEFAULT_REGION: us-east-1
+          
