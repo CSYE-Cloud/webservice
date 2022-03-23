@@ -124,26 +124,12 @@ public class UserController {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			}
 
-//			String pair = new String(Base64.decodeBase64(upd.substring(6)));
-//			String userName = pair.split(":")[0];
-//			String password = pair.split(":")[1];
-
 			System.out.println("Setting for post request");
-//			multiTenantManager.setCurrentTenant("all");
 			
-//			Optional<User> tutorialData = userRepository.findByUsername(userName);// AndPassword(userName, encodedPass);
-			Optional<User> tutorialData = userRepository.findByUsername(upd);// AndPassword(userName, encodedPass);
+			Optional<User> tutorialData = userRepository.findByUsername(upd);
 
 			Image img=null;
 			if (tutorialData.isPresent()) {
-
-//				if (bCryptPasswordEncoder.matches(password, tutorialData.get().getPassword())) {
-
-					//check if verified user
-//					if(!tutorialData.get().isVerified()) {
-//						System.out.println("User is not yet verified");
-//						return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//					}
 										
 					User user = tutorialData.get();
 					 

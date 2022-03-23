@@ -32,7 +32,6 @@ public class Security extends WebSecurityConfigurerAdapter{
 
 	  @Override
 	  public void configure(WebSecurity web) throws Exception {
-	    //web.ignoring().antMatchers(HttpMethod.POST, "/v1/user").antMatchers("/healthz");
 	  }
 
 	  @Override
