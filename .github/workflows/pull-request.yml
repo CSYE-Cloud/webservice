@@ -5,9 +5,9 @@ on:
   #Manually trigger workflow runs
   workflow_dispatch:
   #Trigger the workflow on push from the main branch
-  pull_request:
+  push:
     branches:
-    - main
+    - a7
 jobs:
 #Test's job
   tests:
@@ -25,11 +25,9 @@ jobs:
 
       - name: Building jar
         run: |
-          mvn -B package --file pom.xml
-          mvn clean install
-          mkdir gc && cp target/demo-0.0.1-SNAPSHOT.jar gc
-          cp gc/*.jar ami
-          cd ami && ls --all
+          mvn -B package -DskipTests --file pom.xml
+          cp target/demo-0.0.1-SNAPSHOT.jar ami
+          ls -d $PWD/*
 
       - name: Packer build
         uses: ExitoLab/packer_build_action_aws@v0.2.10
