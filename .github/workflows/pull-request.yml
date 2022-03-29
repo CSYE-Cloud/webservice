@@ -7,7 +7,7 @@ on:
   #Trigger the workflow on push from the main branch
   push:
     branches:
-    - a7
+    - main
 jobs:
 #Test's job
   tests:
