@@ -1,0 +1,29 @@
+version: 0.0
+os: linux
+
+permissions:
+  - object: /home/ubuntu/
+    owner: ubuntu
+    group: ubuntu
+
+files:             
+  - source: ./
+    destination: /home/ubuntu/
+
+hooks:
+  ApplicationStop:
+   - location: ./codedeploy/applicationStop.sh
+     timeout: 300
+     runas: ubuntu
+  BeforeInstall:
+    - location: ./codedeploy/beforeInstall.sh
+      timeout: 1200
+      runas: ubuntu    
+  AfterInstall:
+   - location: ./codedeploy/afterInstall.sh
+     timeout: 400
+     runas: ubuntu
+  ApplicationStart:
+    - location: ./codedeploy/applicationStart.sh
+      timeout: 300
+      runas: ubuntu

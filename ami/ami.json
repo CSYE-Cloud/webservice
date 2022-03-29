@@ -10,8 +10,8 @@
             "type" : "amazon-ebs",
             "profile" : "default",
             "region" : "us-east-1",
-            "access_key": "{{ user `AWS_ACCESS_KEY_ID` }}",
-            "secret_key": "{{ user `AWS_SECRET_ACCESS_KEY` }}",
+            "access_key": "AKIA2XKC6NOAADDD4U6M",
+            "secret_key": "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",
             "instance_type" : "t2.micro",
             "source_ami" : "ami-033b95fb8079dc481",
             "ssh_username" : "ec2-user",
@@ -37,22 +37,23 @@
         }
     ],
 	"provisioners" : [
-        {
-            "type": "file",
-			"source": "demo-0.0.1-SNAPSHOT.jar",
-			"destination": "demo-0.0.1-SNAPSHOT.jar"
-		}
-	,
-	{
-            "type": "file",
-			"source": "webapp.service",
-			"destination": "webapp.service"
-		},
+            
         {
             "type": "shell",
             "inline": ["sleep 30",
 			"sudo yum -y install java-17"
 			]
-        }
+        },
+        {
+            "type": "shell",
+            "inline" : [
+                "sleep 30",
+              "sudo yum install ruby -y",
+              "sudo wget https://aws-codedeploy-{{user `region`}}.s3.{{user `region`}}.amazonaws.com/latest/install",
+              "sudo chmod +x ./install",
+              "sudo ./install auto > /tmp/logfile",
+              "sudo service codedeploy-agent start"
+            ]
+          }
     ]
 }

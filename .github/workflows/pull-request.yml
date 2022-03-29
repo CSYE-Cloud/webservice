@@ -23,19 +23,19 @@ jobs:
           java-package: jdk
           cache: maven
 
-#       - name: Run unit tests
-#         run: mvn test
+      - name: Run unit tests
+        run: mvn test
 
-      - name: Building jar
-        run: |
-          mvn -B package -DskipTests --file pom.xml
-          cp target/demo-0.0.1-SNAPSHOT.jar ami
-          ls -all
-      - name: Upload maven artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: demo-0.0.1-SNAPSHOT.jar
-          path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
+      # - name: Building jar
+      #   run: |
+      #     mvn -B package -DskipTests --file pom.xml
+      #     cp target/demo-0.0.1-SNAPSHOT.jar ami
+      #     ls -all
+      # # - name: Upload maven artifact
+      #   # uses: actions/upload-artifact@v2
+      #   with:
+      #     name: demo-0.0.1-SNAPSHOT.jar
+      #     path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
 
 #       - name: Packer build
 #         uses: ExitoLab/packer_build_action_aws@v0.2.10
