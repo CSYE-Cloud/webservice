@@ -40,9 +40,9 @@ jobs:
           ls -all
       # # - name: Upload maven artifact
       #   # uses: actions/upload-artifact@v2
-        with:
-          name: demo-0.0.1-SNAPSHOT.jar
-          path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
+        # with:
+        #   name: demo-0.0.1-SNAPSHOT.jar
+        #   path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
 
       - name: Packer build
         uses: ExitoLab/packer_build_action_aws@v0.2.10
@@ -71,7 +71,7 @@ jobs:
           zip -r webapp-${{ steps.vars.outputs.sha_short }}.zip \
           ./target/demo-0.0.1-SNAPSHOT.jar ./codedeploy/*.sh appspec.yml
           mv webapp-${{ steps.vars.outputs.sha_short }}.zip ./codedeploy_artifact
-          
+
       # Upload Artifacts to S3
       - name: Uploading Artifacts
         run: |
