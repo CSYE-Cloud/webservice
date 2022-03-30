@@ -85,7 +85,7 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name "csye6225-webapp-deployment" \
           --description "deploy webapp" \
-          --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},bundleType=zip,key=webapp-${{ steps.vars.outputs.sha_short }}.zip \
+          --s3-location bucket="${{ secrets.S3_BUCKET_NAME }},bundleType=zip,key=webapp-${{ steps.vars.outputs.sha_short }}.zip" \
           --region us-east-1 \
           --output json)
           echo $output
