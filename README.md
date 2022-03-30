@@ -16,7 +16,7 @@ Create a web application using a technology stack that meets Cloud-Native Web Ap
 - Spring boot setup
 - Git/Git Desktop and GitHub
 - Postman
-- Eclipse IDE
+- Eclipse IDE.
 
 
 **Build**
