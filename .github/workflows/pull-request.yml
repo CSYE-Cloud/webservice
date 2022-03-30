@@ -7,7 +7,7 @@ on:
   #Trigger the workflow on push from the main branch
   push:
     branches:
-    - a7
+    - main
 jobs:
 #Test's job
   tests:
@@ -31,19 +31,19 @@ jobs:
       #     mvn -B package -DskipTests --file pom.xml
       #     cp target/demo-0.0.1-SNAPSHOT.jar ami
       #     ls -all
-      # # - name: Upload maven artifact
-      #   # uses: actions/upload-artifact@v2
+      # # # - name: Upload maven artifact
+      # #   # uses: actions/upload-artifact@v2
       #   with:
       #     name: demo-0.0.1-SNAPSHOT.jar
       #     path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
 
-#       - name: Packer build
-#         uses: ExitoLab/packer_build_action_aws@v0.2.10
-#         with:
-#           templateFile: 'ami.json'
-#           workingDir: 'ami'
-#         env:
-#           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
-#           AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
-#           AWS_DEFAULT_REGION: us-east-1
+      # - name: Packer build
+      #   uses: ExitoLab/packer_build_action_aws@v0.2.10
+      #   with:
+      #     templateFile: 'ami.json'
+      #     workingDir: 'ami'
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_DEFAULT_REGION: us-east-1
           

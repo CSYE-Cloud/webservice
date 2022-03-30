@@ -1,6 +1,5 @@
 name: Build and Deploy Webapp
 
-
 on:
   push:
     branches: [ main ]
@@ -9,21 +8,21 @@ on:
 
 jobs:
   build_deploy:
-
     # runner
     runs-on: ubuntu-latest
-
     steps:
 
       # checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Java JDK 11
+      # Java JDK 17
       - name: set JDK 17
         uses: actions/setup-java@v1
         with:
           java-version: 17
+      - name: Run unit tests
+        run: mvn test
 
       # Set up sha_short variable
       - name: Set sha_short
@@ -31,36 +30,55 @@ jobs:
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       # Build
-      - name: Build Artifact
+      - name: Building Artifact
         run: |          
           mvn clean install -Dmaven.test.skip=true
-      # Install Packages
-      - name: Install apt & zip
-        run: sudo apt-get update && sudo apt-get install wget zip unzip -y
+      - name: Building jar
+        run: |
+          mvn -B package -DskipTests --file pom.xml
+          cp target/demo-0.0.1-SNAPSHOT.jar ami
+          ls -all
+      # # - name: Upload maven artifact
+      #   # uses: actions/upload-artifact@v2
+        with:
+          name: demo-0.0.1-SNAPSHOT.jar
+          path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
 
+      - name: Packer build
+        uses: ExitoLab/packer_build_action_aws@v0.2.10
+        with:
+          templateFile: 'ami.json'
+          workingDir: 'ami'
+        env:
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          
       # AWS CLI pre-installed in Ubuntu-Latest
 
       # AWS Credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.GHACTION_USER_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.GHACTION_USER_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
       # Zip Artifact
-      - name: Zip Artifact
+      - name: Zipping Artifacts
         run: |
           mkdir codedeploy_artifact
           zip -r webapp-${{ steps.vars.outputs.sha_short }}.zip \
           ./target/demo-0.0.1-SNAPSHOT.jar ./codedeploy/*.sh appspec.yml
           mv webapp-${{ steps.vars.outputs.sha_short }}.zip ./codedeploy_artifact
+          
       # Upload Artifacts to S3
-      - name: Upload Artifacts
+      - name: Uploading Artifacts
         run: |
           aws s3 sync ./codedeploy_artifact s3://${{ secrets.S3_BUCKET_NAME }}
+
       # Deploy Artifact to EC2
-      - name: Deploy Webapp
+      - name: Deploying Webapp
         run: |
           output=$(aws deploy create-deployment \
           --application-name "csye6225-webapp" \

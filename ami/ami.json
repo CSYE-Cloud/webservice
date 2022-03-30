@@ -37,7 +37,17 @@
         }
     ],
 	"provisioners" : [
+        {
+            "type": "file",
+            "source": "demo-0.0.1-SNAPSHOT.jar",
+            "destination": "demo-0.0.1-SNAPSHOT.jar"
+            },
+            {
+            "type": "file",
+            "source": "webapp.service",
+            "destination": "webapp.service"
             
+            },    
         {
             "type": "shell",
             "inline": ["sleep 30",
@@ -51,8 +61,9 @@
               "sudo yum install ruby -y",
               "sudo wget https://aws-codedeploy-{{user `region`}}.s3.{{user `region`}}.amazonaws.com/latest/install",
               "sudo chmod +x ./install",
-              "sudo ./install auto > /tmp/logfile",
-              "sudo service codedeploy-agent start"
+              "sudo ./install auto",
+              "sudo service codedeploy-agent start",
+              "sudo service codedeploy-agent status"
             ]
           }
     ]

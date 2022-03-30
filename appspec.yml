@@ -1,29 +1,25 @@
 version: 0.0
 os: linux
 
-permissions:
-  - object: /home/ubuntu/
-    owner: ubuntu
-    group: ubuntu
-
 files:             
-  - source: ./
-    destination: /home/ubuntu/
+  - source: target/demo-0.0.1-SNAPSHOT.jar
+    destination: /home/ec2-user/
 
 hooks:
   ApplicationStop:
    - location: ./codedeploy/applicationStop.sh
      timeout: 300
-     runas: ubuntu
+     runas: ec2-user
   BeforeInstall:
     - location: ./codedeploy/beforeInstall.sh
       timeout: 1200
-      runas: ubuntu    
+      runas: ec2-user    
   AfterInstall:
    - location: ./codedeploy/afterInstall.sh
      timeout: 400
-     runas: ubuntu
+     runas: ec2-user
   ApplicationStart:
     - location: ./codedeploy/applicationStart.sh
       timeout: 300
-      runas: ubuntu
+      runas: ec2-user
+
