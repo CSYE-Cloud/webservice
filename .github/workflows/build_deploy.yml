@@ -21,8 +21,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      - name: Run unit tests
-        run: mvn test
+      # - name: Run unit tests
+      #   run: mvn test
 
       # Set up sha_short variable
       - name: Set sha_short
@@ -44,15 +44,15 @@ jobs:
         #   name: demo-0.0.1-SNAPSHOT.jar
         #   path: ${{ github.workspace }}/ami/demo-0.0.1-SNAPSHOT.jar
 
-      - name: Packer build
-        uses: ExitoLab/packer_build_action_aws@v0.2.10
-        with:
-          templateFile: 'ami.json'
-          workingDir: 'ami'
-        env:
-          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: us-east-1
+      # - name: Packer build
+      #   uses: ExitoLab/packer_build_action_aws@v0.2.10
+      #   with:
+      #     templateFile: 'ami.json'
+      #     workingDir: 'ami'
+      #   env:
+      #     AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY }}
+      #     AWS_DEFAULT_REGION: us-east-1
           
       # AWS CLI pre-installed in Ubuntu-Latest
 
