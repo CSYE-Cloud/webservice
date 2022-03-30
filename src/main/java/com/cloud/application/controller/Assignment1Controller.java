@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Assignment1Controller{
-	@GetMapping(value="/healthz")
+	@GetMapping(value="/health")
 	public ResponseEntity<String> getMethodName() {
 		return new ResponseEntity<>("", HttpStatus.OK);
 
