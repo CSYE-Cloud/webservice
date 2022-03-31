@@ -56,7 +56,7 @@ public class UserController {
 	ImageRepository imageRepo;
 
 	@ResponseStatus(HttpStatus.CREATED)
-	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	public UserRegistrationResponse createUser(@RequestBody User user) {
 		try {
 
