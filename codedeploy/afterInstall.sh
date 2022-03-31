@@ -8,7 +8,7 @@ echo "in after install"
 pid=$(sudo lsof -i tcp:8080 -t)
 echo $pid
 
-sudo systemctl stop webapp.service
-
+# sudo systemctl start webapp.service
+# sudo chown ec2-user:ec2-user
 #removing previous build ROOT folder
-sudo rm -rf /home/ec2-user/*.jar
+# sudo rm -rf /home/ec2-user/*.jar
