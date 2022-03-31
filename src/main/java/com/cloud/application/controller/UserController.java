@@ -37,7 +37,7 @@ import com.cloud.application.service.UserService;
 
 //@Component
 @RestController
-@RequestMapping("/v2")
+@RequestMapping("/v1")
 public class UserController {
 
 	@Autowired
