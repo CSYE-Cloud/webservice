@@ -69,9 +69,7 @@
         {
             "type": "shell",
             "inline": [
-                "sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb",
-                "sudo chmod +x ./amazon-cloudwatch-agent.deb",
-                "sudo dpkg -i ./amazon-cloudwatch-agent.deb",
+                "sudo yum install amazon-cloudwatch-agent -y",
                 "sudo systemctl enable amazon-cloudwatch-agent",
                 "sudo systemctl start amazon-cloudwatch-agent"
             ]
