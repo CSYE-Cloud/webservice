@@ -34,6 +34,7 @@ import com.cloud.application.repository.ImageRepository;
 import com.cloud.application.repository.UserRepository;
 import com.cloud.application.service.Service;
 import com.cloud.application.service.UserService;
+import com.timgroup.statsd.StatsDClient;
 
 //@Component
 @RestController
@@ -53,12 +54,16 @@ public class UserController {
 	Service service;
 	
 	@Autowired
+    private StatsDClient statsd;
+	
+	@Autowired
 	ImageRepository imageRepo;
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public UserRegistrationResponse createUser(@RequestBody User user) {
 		try {
+            statsd.increment("Post user/ - Create new User");
 
 			if (user == null || user.getPassword() == null || user.getFirst_name() == null || user.getUsername() == null
 					|| user.getLast_name() == null) {
@@ -95,6 +100,9 @@ public class UserController {
 
 	@RequestMapping(value = "user/self", method = RequestMethod.GET)
 	public UserRegistrationResponse displayUser(Authentication authentication, Principal principal) {
+		
+        statsd.increment("Get user/self - User");
+
 		String name = principal.getName();
 		User users = userService.loadUserByUsername(name);
 		UserRegistrationResponse userResponse = new UserRegistrationResponse();
@@ -110,6 +118,9 @@ public class UserController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@RequestMapping(value = "user/self", method = RequestMethod.PUT)
 	public void updateUser(Authentication authentication, Principal principal, @RequestBody UserUpdateRequest request) {
+		
+		statsd.increment("Put user/self - Update User");
+		
 		userService.update(request, principal.getName());
 	}
 	
@@ -122,6 +133,7 @@ public class UserController {
 			if (upd == null || upd.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			}
+			statsd.increment("Post user/self/pic - Post pic of User");
 
 			System.out.println("Setting for post request");
 			
@@ -164,6 +176,7 @@ public class UserController {
 			if (upd == null || upd.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 			}
+			statsd.increment("Get user/self/pic - Get pic of User");
 
 			System.out.println("Setting for get request");
 			
@@ -191,6 +204,8 @@ public class UserController {
 	  public ResponseEntity<String> deleteImage(Authentication authentication, Principal principal)
 			  throws Exception {
 				System.out.println("In delete /user/self/pic");
+				statsd.increment("Delete user/self/pic - Delete pic of User");
+
 		 String upd = principal.getName();
 			if (upd == null || upd.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
