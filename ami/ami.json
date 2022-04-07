@@ -40,7 +40,7 @@
 	"provisioners" : [
         {
             "type": "file",
-            "source": "${{ user `GITHUB_REPO_PATH` }}/cloudwatch_conf.json",
+            "source": "./cloudwatch_conf.json",
             "destination": "/home/ec2-user/cloudwatch_conf.json"
             },
             {
