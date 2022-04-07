@@ -13,7 +13,6 @@
             "region" : "us-east-1",
             "access_key": "{{ user `AWS_ACCESS_KEY_ID` }}",
             "secret_key": "{{ user `AWS_SECRET_ACCESS_KEY` }}",
-            "github_rep": "{{ user `GITHUB_REPO_PATH` }}",
             "instance_type" : "t2.micro",
             "source_ami" : "ami-033b95fb8079dc481",
             "ssh_username" : "ec2-user",
@@ -41,7 +40,7 @@
 	"provisioners" : [
         {
             "type": "file",
-            "source": "${var.github_rep}/cloudwatch_conf.json",
+            "source": "${{ user `GITHUB_REPO_PATH` }}/cloudwatch_conf.json",
             "destination": "/home/ec2-user/cloudwatch_conf.json"
             },
             {
