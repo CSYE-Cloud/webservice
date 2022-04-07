@@ -3,7 +3,8 @@
         "region" : "us-east-1",
         "aws_access_key_id": "{{ env `AWS_ACCESS_KEY_ID` }}",
         "aws_secret_access_key": "{{ env `AWS_SECRET_ACCESS_KEY` }}",
-        "source_ami": "{{ env `SOURCE_AMI` }}"
+        "source_ami": "{{ env `SOURCE_AMI` }}",
+        "github_rep": "{{ env `GITHUB_REPO_PATH`}}"
         },
     "builders" : [
         {
@@ -39,7 +40,7 @@
 	"provisioners" : [
         {
             "type": "file",
-            "source": "${{ github.workspace }}/cloudwatch_conf.json",
+            "source": "${variables.github_rep}/cloudwatch_conf.json",
             "destination": "/home/ec2-user/cloudwatch_conf.json"
             },
             {
