@@ -39,15 +39,20 @@
 	"provisioners" : [
         {
             "type": "file",
-            "source": "demo-0.0.1-SNAPSHOT.jar",
-            "destination": "demo-0.0.1-SNAPSHOT.jar"
+            "source": "${GITHUB_EPO_PATH}/cloudwatch_conf.json",
+            "destination": "/home/ec2-user/cloudwatch_conf.json"
             },
             {
             "type": "file",
             "source": "webapp.service",
             "destination": "webapp.service"
             
-            },    
+            }, 
+            {
+                "type": "file",
+                "source": "demo-0.0.1-SNAPSHOT.jar",
+                "destination": "demo-0.0.1-SNAPSHOT.jar"
+                },   
         {
             "type": "shell",
             "inline": ["sleep 30",
@@ -71,7 +76,8 @@
             "inline": [
                 "sudo yum install amazon-cloudwatch-agent -y",
                 "sudo systemctl enable amazon-cloudwatch-agent",
-                "sudo systemctl start amazon-cloudwatch-agent"
+                "sudo systemctl start amazon-cloudwatch-agent",
+                "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/home/ec2-user/cloudwatch_conf.json -s"
             ]
         }     
     ]
