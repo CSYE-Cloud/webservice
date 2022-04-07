@@ -39,7 +39,7 @@
 	"provisioners" : [
         {
             "type": "file",
-            "source": "${{github.workspace}}/cloudwatch_conf.json",
+            "source": "${{ github.workspace }}/cloudwatch_conf.json",
             "destination": "/home/ec2-user/cloudwatch_conf.json"
             },
             {
