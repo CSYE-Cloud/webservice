@@ -14,7 +14,7 @@ public class Assignment1Controller{
 	@Autowired
     private StatsDClient statsd;
 	
-	@GetMapping(value="/healthz")
+	@GetMapping(value="/health")
 	public ResponseEntity<String> getMethodName() {
        
 		statsd.increment("Calls - Get Healthz");
