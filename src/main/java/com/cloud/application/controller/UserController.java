@@ -1,6 +1,10 @@
 package com.cloud.application.controller;
 
+import java.math.BigDecimal;
 import java.security.Principal;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +28,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.cloud.application.config.BadRequestException;
 import com.cloud.application.model.Image;
 import com.cloud.application.model.User;
@@ -32,6 +41,7 @@ import com.cloud.application.model.response.UserRegistrationResponse;
 import com.cloud.application.model.response.UserUpdateResponse;
 import com.cloud.application.repository.ImageRepository;
 import com.cloud.application.repository.UserRepository;
+import com.cloud.application.service.SNS;
 import com.cloud.application.service.Service;
 import com.cloud.application.service.UserService;
 import com.timgroup.statsd.StatsDClient;
@@ -58,6 +68,11 @@ public class UserController {
 	
 	@Autowired
 	ImageRepository imageRepo;
+	
+	@Autowired
+	SNS snsService;
+	
+	private DynamoDB dynamoDB;
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
@@ -83,6 +98,9 @@ public class UserController {
 
 			User entity = new User(user.getFirst_name(), user.getLast_name(), user.getPassword(), user.getUsername());
 			User users = userRepository.save(entity);
+			
+			//create entry in dynamodb to trigger lambda by sns
+			snsService.postToTopic("POST", users.getUsername());
 
 			UserRegistrationResponse userResponse = new UserRegistrationResponse();
 			userResponse.setId(users.getId());
@@ -234,4 +252,140 @@ public class UserController {
 			}
 		 
 	  }
+	//verifyUserEmail?email=user@example.com&token=sometoken
+		 //update verfiry and verifed_on in databse
+		 @GetMapping("/verifyUserEmail")
+			public ResponseEntity<String> verifedUserUpdate(@RequestParam("email") String email,
+	                @RequestParam("token") String token) {
+			 String result ="not verfied get";
+				try {
+					//System.out.println("in post");
+					//check if token is still valid in EmailID_Data
+					
+					 // confirm dynamoDB table exists
+			        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+			        dynamoDB = new DynamoDB(client);	       
+			        System.out.println("Get /verifyUserEmail");
+			        Table userEmailsTable = dynamoDB.getTable("EmailID_Data");
+			        if(userEmailsTable == null) {
+			            System.out.println("Table 'Emails_DATA' is not in dynamoDB.");
+			            return null;
+			        }
+			        
+			        System.out.println("EmailD_Data exits table");
+			        System.out.println("EmailD in input is:"+email);
+					System.out.println("Index of spcae: in meial is: "+email.indexOf(" ",0));
+			        if(email.indexOf(" ", 0)!=-1) {
+						 email=email.replace(" ", "+");
+					 }
+			        System.out.println("EmailD after replacement is:"+email);
+			        //check if item exits
+			        Item item = userEmailsTable.getItem("id",email);
+			        System.out.println("item= "+item);
+			        if (item == null ) {
+			            //table.putItem(new
+			        	
+			        	
+			        	
+			        	result="token expired item not present";
+			        }else {
+			        	//if token expired
+			        	BigDecimal toktime=(BigDecimal)item.get("TimeToExist");
+			        	
+			        	
+			        	//calcuate now time
+			        	long now = Instant.now().getEpochSecond(); // unix time
+			            long timereminsa =  now - toktime.longValue(); // 2 mins in sec
+			            System.out.println("tokentime: "+toktime);
+			            System.out.println("now: "+now);
+			            System.out.println("remins: "+timereminsa);
+			            
+			            
+			            //ttl=(ttl + now); // when object will be expired
+			        	if(timereminsa > 0)
+			        	{
+			        		//expired
+			        		result="token expired";
+			        	}
+			        	
+			        	
+			        	//esle update
+			        	 else {
+			 				System.out.println("In get");
+			 				result ="verified success get";
+			 				//get user and update feilds
+			 				
+			 				updateFields( email,  token);
+			 		        }
+			        	
+			        }
+					
+					
+//			        else {
+//					System.out.println("In get");
+//					result ="verified success get";
+//					//get user and update feilds
+//					
+//					updateFields( email,  token);
+//			        }
+					
+				}
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+				
+				return new ResponseEntity<>(result, HttpStatus.OK);
+		 }
+		 
+		 
+		 @PostMapping("/verifyUserEmail")
+			public ResponseEntity<String> verifedUserUpdatePost(@RequestParam("email") String email,
+	             @RequestParam("token") String token) {
+			 String result ="not verfied post";
+				try {
+					//System.out.println("in post");
+					//check if token is still valid
+					
+					System.out.println("In post");
+					result ="verified success post";
+					updateFields( email,  token);
+					
+				}
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+				
+				return new ResponseEntity<>(result, HttpStatus.OK);
+		 }
+		 
+		 public void updateFields(String email, String token) {
+			 System.out.println("Email is: "+email);
+			 System.out.println("tokenis: "+token);
+			 
+			 //check if email has space
+			 if(email.indexOf(' ', 0)!=-1) {
+				 email.replace(' ', '+');
+			 }
+			 
+			 System.out.println("Now Email is: "+email);
+			 
+			 Optional<User> tutorialData = userRepository.findByUsername(email);
+			 if (tutorialData.isPresent()) {
+				 
+				 User user = tutorialData.get();
+				 user.setVerified(true);
+				 user.setVerified_on( OffsetDateTime.now(Clock.systemUTC()).toString());
+				 user.setAccountUpdated(OffsetDateTime.now(Clock.systemUTC()).toLocalDateTime());
+				 userRepository.save(user);
+				 System.out.println("user fields save success");
+			 }
+			 else {
+				 System.out.println("error update verify user fields");
+			 }
+			 
+			 System.out.println("updated user verify fields");
+		 }
+		 
 }
