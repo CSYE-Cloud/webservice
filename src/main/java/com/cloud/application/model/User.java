@@ -70,8 +70,8 @@ public class User implements UserDetails{
 	@Column(name = "account_updated", nullable = false)
 	private LocalDateTime accountUpdated;
     
-//    private boolean verified;
-//    private String verified_on;
+    private boolean verified;
+    private String verified_on;
 
 	public User() {
 
@@ -85,8 +85,8 @@ public class User implements UserDetails{
         this.username = username;
 //        this.account_created = OffsetDateTime.now(Clock.systemUTC()).toString();
 //        this.account_updated = OffsetDateTime.now(Clock.systemUTC()).toString();
-//        this.verified = false;
-//        this.verified_on = "";//OffsetDateTime.now(Clock.systemUTC()).toString();
+        this.verified = false;
+        this.verified_on = "";
 //    }
 	}
 
@@ -139,6 +139,10 @@ public class User implements UserDetails{
 		return accountUpdated;
 	}
 
+	public void setAccountUpdated(LocalDateTime accountUpdated) {
+		this.accountUpdated = accountUpdated;
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 	    return true;
@@ -158,6 +162,24 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 	    return true;
 	}
+	
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+
+	public String getVerified_on() {
+		return verified_on;
+	}
+
+	public void setVerified_on(String verified_on) {
+		this.verified_on = verified_on;
+	}
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
