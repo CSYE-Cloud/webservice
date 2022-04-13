@@ -50,7 +50,7 @@ import com.timgroup.statsd.StatsDClient;
 
 //@Component
 @RestController
-@RequestMapping("/v2")
+@RequestMapping("/v1")
 public class UserController {
 
 	@Autowired
