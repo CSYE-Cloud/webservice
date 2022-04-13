@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -123,6 +124,11 @@ public class UserController {
 
 		String name = principal.getName();
 		User users = userService.loadUserByUsername(name);
+		if(!users.isVerified()) {
+			System.out.println("User is not yet verified");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		}
+		
 		UserRegistrationResponse userResponse = new UserRegistrationResponse();
 		userResponse.setId(users.getId());
 		userResponse.setFirstName(users.getFirst_name());
@@ -130,6 +136,7 @@ public class UserController {
 		userResponse.setUsername(users.getUsername());
 		userResponse.setAccount_created(users.getAccountCreated());
 		userResponse.setAccount_updated(users.getAccountUpdated());
+//		return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		return userResponse;
 	}
 
@@ -159,7 +166,11 @@ public class UserController {
 
 			Image img=null;
 			if (tutorialData.isPresent()) {
-										
+				if(!tutorialData.get().isVerified()) {
+					System.out.println("User is not yet verified");
+					return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				}
+								
 					User user = tutorialData.get();
 					 
 					//check if already image i.e. update request
@@ -201,7 +212,11 @@ public class UserController {
 			Optional<User> tutorialData = userRepository.findByUsername(upd);// AndPassword(userName, encodedPass);
 			Optional<Image> img=null;
 			if (tutorialData.isPresent()) {
-
+				if(!tutorialData.get().isVerified()) {
+					System.out.println("User is not yet verified");
+					return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				}
+				
 					User user = tutorialData.get();
 				    img = imageRepo.findByUserId(user.getId());
 				    if (img.isPresent()) {
@@ -232,7 +247,11 @@ public class UserController {
 			Optional<User> tutorialData = userRepository.findByUsername(upd);// AndPassword(userName, encodedPass);
 			Optional<Image> img=null;
 			if (tutorialData.isPresent()) {
-					
+				if(!tutorialData.get().isVerified()) {
+					System.out.println("User is not yet verified");
+					return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				}
+				
 					User user = tutorialData.get();
 										
 				    img = imageRepo.findByUserId(user.getId());
@@ -252,18 +271,13 @@ public class UserController {
 			}
 		 
 	  }
-	//verifyUserEmail?email=user@example.com&token=sometoken
-		 //update verfiry and verifed_on in databse
+	 
 		 @GetMapping("/verifyUserEmail")
 			public ResponseEntity<String> verifedUserUpdate(@RequestParam("email") String email,
 	                @RequestParam("token") String token) {
 			 String result ="not verfied get";
 				try {
-					//System.out.println("in post");
-					//check if token is still valid in EmailID_Data
-					
-					 // confirm dynamoDB table exists
-			        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+					 AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 			        dynamoDB = new DynamoDB(client);	       
 			        System.out.println("Get /verifyUserEmail");
 			        Table userEmailsTable = dynamoDB.getTable("EmailID_Data");

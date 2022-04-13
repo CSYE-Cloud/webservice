@@ -3,11 +3,14 @@ package com.cloud.application.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.cloud.application.config.BadRequestException;
 import com.cloud.application.config.NoContentException;
@@ -31,6 +34,10 @@ public class UserService implements UserDetailsService {
 	    if (user.isEmpty()) {
 	        throw new UsernameNotFoundException(username);
 	    }
+//	    if(!user.get().isVerified()) {
+//			System.out.println("User is not yet verified");
+//			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//		}
 	    return user.get();
 	}
 	
@@ -40,6 +47,11 @@ public class UserService implements UserDetailsService {
 			throw new BadRequestException();
 		}
 		Optional<User> opt = userRepository.findByUsername(username);
+		
+		if(!opt.get().isVerified()) {
+			System.out.println("User is not yet verified");
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+		}
 		User u = opt.get();
 		
 		u.setFirst_name(request.getFirstName());
