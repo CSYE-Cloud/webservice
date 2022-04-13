@@ -42,7 +42,7 @@ public class Security extends WebSecurityConfigurerAdapter{
 	            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	            .and()
 	            .authorizeRequests()
-	            .antMatchers(HttpMethod.POST, "/v1/user").permitAll()
+	            .antMatchers(HttpMethod.POST, "/v2/user").permitAll()
 	            .antMatchers("/healthz").permitAll()
 	            .anyRequest()
 	            .authenticated()
