@@ -35,6 +35,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.cloud.application.config.BadRequestException;
+import com.cloud.application.config.ForbiddenException;
 import com.cloud.application.model.Image;
 import com.cloud.application.model.User;
 import com.cloud.application.model.request.UserUpdateRequest;
@@ -126,7 +127,8 @@ public class UserController {
 		User users = userService.loadUserByUsername(name);
 		if(!users.isVerified()) {
 			System.out.println("User is not yet verified");
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+//			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw new ForbiddenException();
 		}
 		
 		UserRegistrationResponse userResponse = new UserRegistrationResponse();

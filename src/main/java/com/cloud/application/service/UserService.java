@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.cloud.application.config.BadRequestException;
+import com.cloud.application.config.ForbiddenException;
 import com.cloud.application.config.NoContentException;
 import com.cloud.application.model.User;
 import com.cloud.application.model.request.UserUpdateRequest;
@@ -50,7 +51,9 @@ public class UserService implements UserDetailsService {
 		
 		if(!opt.get().isVerified()) {
 			System.out.println("User is not yet verified");
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+//			throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+			throw new ForbiddenException();
+
 		}
 		User u = opt.get();
 		
