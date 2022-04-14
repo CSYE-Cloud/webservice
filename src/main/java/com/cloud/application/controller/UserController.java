@@ -277,7 +277,7 @@ public class UserController {
 		 @GetMapping("/verifyUserEmail")
 			public ResponseEntity<String> verifedUserUpdate(@RequestParam("email") String userEmail,
 	                @RequestParam("token") String userToken) {
-			 String result ="not verfied get";
+			 String result ="The user is not verified (get)";
 				try {
 					 AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 			        dynamoDB = new DynamoDB(client);	       
@@ -296,13 +296,13 @@ public class UserController {
 					 }
 			        System.out.println("EmailD after replacement is:"+userEmail);
 			        //check if item exits
-			        Item item = userEmailsTable.getItem("id",userEmail);
+			        Item item = userEmailsTable.getItem("emailID",userEmail);
 			        System.out.println("item= "+item);
 			        if (item == null ) {
 			        	result="token expired item not present";
 			        }else {
 			        	//if token expired
-			        	BigDecimal tokentimeExpiry=(BigDecimal)item.get("TimeToExist");
+			        	BigDecimal tokentimeExpiry=(BigDecimal)item.get("TimeToLive");
 			        	
 			        	
 			        	//calcuate now time
@@ -322,10 +322,10 @@ public class UserController {
 
 			        	 else {
 			 				System.out.println("In get");
-			 				result ="verified success get";
+			 				result ="The user is verified (get)";
 			 				//get user and update feilds
 			 				
-			 				saveFields( userEmail,  userToken);
+			 				saveFields(userEmail,  userToken);
 			 		        }
 			        }
 				}
@@ -341,7 +341,7 @@ public class UserController {
 //		 @PostMapping("/verifyUserEmail")
 //			public ResponseEntity<String> verifedUserUpdatePost(@RequestParam("email") String email,
 //	             @RequestParam("token") String token) {
-//			 String result ="not verfied post";
+//			 String result ="The user is not verified (get)";
 //				try {
 //					//System.out.println("in post");
 //					//check if token is still valid
