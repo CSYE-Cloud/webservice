@@ -275,44 +275,40 @@ public class UserController {
 	  }
 	 
 		 @GetMapping("/verifyUserEmail")
-			public ResponseEntity<String> verifedUserUpdate(@RequestParam("email") String email,
-	                @RequestParam("token") String token) {
-			 String result ="not verfied get";
+			public ResponseEntity<String> verifedUserUpdate(@RequestParam("email") String userEmail,
+	                @RequestParam("token") String userToken) {
+			 String result ="The user is not verified (get)";
 				try {
 					 AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
 			        dynamoDB = new DynamoDB(client);	       
 			        System.out.println("Get /verifyUserEmail");
-			        Table userEmailsTable = dynamoDB.getTable("EmailID_Data");
+			        Table userEmailsTable = dynamoDB.getTable("AccountDetails");
 			        if(userEmailsTable == null) {
-			            System.out.println("Table 'Emails_DATA' is not in dynamoDB.");
+			            System.out.println("Table 'AccountDetails' is not in dynamoDB.");
 			            return null;
 			        }
 			        
-			        System.out.println("EmailD_Data exits table");
-			        System.out.println("EmailD in input is:"+email);
-					System.out.println("Index of spcae: in meial is: "+email.indexOf(" ",0));
-			        if(email.indexOf(" ", 0)!=-1) {
-						 email=email.replace(" ", "+");
+			        System.out.println("AccountDetails exits table");
+			        System.out.println("AccountEmail in input is:"+userEmail);
+					System.out.println("Index of spcae: in meial is: "+userEmail.indexOf(" ",0));
+			        if(userEmail.indexOf(" ", 0)!=-1) {
+						 userEmail=userEmail.replace(" ", "+");
 					 }
-			        System.out.println("EmailD after replacement is:"+email);
+			        System.out.println("EmailD after replacement is:"+userEmail);
 			        //check if item exits
-			        Item item = userEmailsTable.getItem("id",email);
+			        Item item = userEmailsTable.getItem("emailID",userEmail);
 			        System.out.println("item= "+item);
 			        if (item == null ) {
-			            //table.putItem(new
-			        	
-			        	
-			        	
 			        	result="token expired item not present";
 			        }else {
 			        	//if token expired
-			        	BigDecimal toktime=(BigDecimal)item.get("TimeToExist");
+			        	BigDecimal tokentimeExpiry=(BigDecimal)item.get("TimeToLive");
 			        	
 			        	
 			        	//calcuate now time
 			        	long now = Instant.now().getEpochSecond(); // unix time
-			            long timereminsa =  now - toktime.longValue(); // 2 mins in sec
-			            System.out.println("tokentime: "+toktime);
+			            long timereminsa =  now - tokentimeExpiry.longValue(); // 2 mins in sec
+			            System.out.println("tokentime: "+tokentimeExpiry);
 			            System.out.println("now: "+now);
 			            System.out.println("remins: "+timereminsa);
 			            
@@ -323,85 +319,72 @@ public class UserController {
 			        		//expired
 			        		result="token expired";
 			        	}
-			        	
-			        	
-			        	//esle update
+
 			        	 else {
 			 				System.out.println("In get");
-			 				result ="verified success get";
+			 				result ="The user is verified (get)";
 			 				//get user and update feilds
 			 				
-			 				updateFields( email,  token);
+			 				saveFields(userEmail,  userToken);
 			 		        }
-			        	
 			        }
-					
-					
-//			        else {
-//					System.out.println("In get");
-//					result ="verified success get";
-//					//get user and update feilds
+				}
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+				
+				return new ResponseEntity<>(result, HttpStatus.OK);
+		 }
+		 
+//		 
+//		 @PostMapping("/verifyUserEmail")
+//			public ResponseEntity<String> verifedUserUpdatePost(@RequestParam("email") String email,
+//	             @RequestParam("token") String token) {
+//			 String result ="The user is not verified (get)";
+//				try {
+//					//System.out.println("in post");
+//					//check if token is still valid
 //					
+//					System.out.println("In post");
+//					result ="verified success post";
 //					updateFields( email,  token);
-//			        }
-					
-				}
-				catch(Exception e)
-				{
-					System.out.println(e);
-				}
-				
-				return new ResponseEntity<>(result, HttpStatus.OK);
-		 }
-		 
-		 
-		 @PostMapping("/verifyUserEmail")
-			public ResponseEntity<String> verifedUserUpdatePost(@RequestParam("email") String email,
-	             @RequestParam("token") String token) {
-			 String result ="not verfied post";
-				try {
-					//System.out.println("in post");
-					//check if token is still valid
-					
-					System.out.println("In post");
-					result ="verified success post";
-					updateFields( email,  token);
-					
-				}
-				catch(Exception e)
-				{
-					System.out.println(e);
-				}
-				
-				return new ResponseEntity<>(result, HttpStatus.OK);
-		 }
-		 
-		 public void updateFields(String email, String token) {
-			 System.out.println("Email is: "+email);
-			 System.out.println("tokenis: "+token);
+//					
+//				}
+//				catch(Exception e)
+//				{
+//					System.out.println(e);
+//				}
+//				
+//				return new ResponseEntity<>(result, HttpStatus.OK);
+//		 }
+//		 
+		 public void saveFields(String rEmail, String randomToken) {
+			 System.out.println("Email is: "+rEmail);
+			 System.out.println("tokenis: "+randomToken);
 			 
 			 //check if email has space
-			 if(email.indexOf(' ', 0)!=-1) {
-				 email.replace(' ', '+');
+			 if(rEmail.indexOf(' ', 0)!=-1) {
+				 rEmail.replace(' ', '+');
 			 }
 			 
-			 System.out.println("Now Email is: "+email);
+			 System.out.println("Now Email is: "+rEmail);
 			 
-			 Optional<User> tutorialData = userRepository.findByUsername(email);
-			 if (tutorialData.isPresent()) {
+			 Optional<User> tutorialData = userRepository.findByUsername(rEmail);
+//			 if (tutorialData.isPresent()) {
 				 
-				 User user = tutorialData.get();
-				 user.setVerified(true);
-				 user.setVerified_on( OffsetDateTime.now(Clock.systemUTC()).toString());
-				 user.setAccountUpdated(OffsetDateTime.now(Clock.systemUTC()).toLocalDateTime());
-				 userRepository.save(user);
+				 User u = tutorialData.get();
+				 u.setVerified(true);
+				 u.setVerified_on( OffsetDateTime.now(Clock.systemUTC()).toString());
+				 u.setAccountUpdated(OffsetDateTime.now(Clock.systemUTC()).toLocalDateTime());
+				 userRepository.save(u);
 				 System.out.println("user fields save success");
-			 }
-			 else {
-				 System.out.println("error update verify user fields");
-			 }
+//			 }
+//			 else {
+//				 System.out.println("error update verify user fields");
+//			 }
 			 
-			 System.out.println("updated user verify fields");
+			 System.out.println("User updated with verify details");
 		 }
 		 
 }
