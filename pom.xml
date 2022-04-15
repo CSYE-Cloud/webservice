@@ -103,7 +103,10 @@
 			<artifactId>aws-java-sdk-sns</artifactId>
 			<version>1.12.119</version>
 		</dependency>
-
+<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
 <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
 <!-- <dependency>
     <groupId>org.springframework.security</groupId>
