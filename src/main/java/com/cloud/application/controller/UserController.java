@@ -10,6 +10,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,12 +78,13 @@ public class UserController {
 	
 	private DynamoDB dynamoDB;
 
+	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public UserRegistrationResponse createUser(@RequestBody User user) {
 		try {
             statsd.increment("Post user/ - Create new User");
-
+            logger.info("in post user");
 			if (user == null || user.getPassword() == null || user.getFirst_name() == null || user.getUsername() == null
 					|| user.getLast_name() == null) {
 				throw new BadRequestException();
@@ -90,6 +93,8 @@ public class UserController {
 			Optional<User> u = userRepository.findByUsername(user.getUsername());
 
 			System.out.println("checking if user is present");
+			logger.info("checking if user is present");
+			logger.info("user  ==== ", user.toString()); 
 			if (u.isPresent()) {
 				throw new BadRequestException();
 			}
