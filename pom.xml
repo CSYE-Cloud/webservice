@@ -17,7 +17,6 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -67,7 +66,6 @@
     <artifactId>aws-java-sdk-s3</artifactId>
     <version>1.12.172</version>
 </dependency>
-<!-- https://mvnrepository.com/artifact/software.amazon.awssdk/aws-sdk-java -->
 <dependency>
     <groupId>software.amazon.awssdk</groupId>
     <artifactId>aws-sdk-java</artifactId>
