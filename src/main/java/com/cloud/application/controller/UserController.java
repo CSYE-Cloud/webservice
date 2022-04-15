@@ -91,6 +91,7 @@ public class UserController {
 			logger.info("checking if user is present");
 			logger.info("user  ==== ", user.toString()); 
 			if (u.isPresent()) {
+				logger.info("what the fuck");
 				throw new BadRequestException();
 			}
 
