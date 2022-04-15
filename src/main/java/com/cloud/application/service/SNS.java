@@ -31,7 +31,7 @@ public class SNS {
     String snsTopic;
     
     private final static Logger logger = LoggerFactory.getLogger(SNS.class);
-    public void postToTopic(String rEmail, String requestType) {
+    public void postToTopic(String requestType, String rEmail) {
 
         try {
         	logger.info("in post to topic");
