@@ -7,18 +7,13 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,26 +24,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.cloud.application.config.BadRequestException;
-import com.cloud.application.config.ForbiddenException;
+
 import com.cloud.application.model.Image;
 import com.cloud.application.model.User;
 import com.cloud.application.model.request.UserUpdateRequest;
 import com.cloud.application.model.response.UserRegistrationResponse;
-import com.cloud.application.model.response.UserUpdateResponse;
 import com.cloud.application.repository.ImageRepository;
 import com.cloud.application.repository.UserRepository;
 import com.cloud.application.service.SNS;
 import com.cloud.application.service.Service;
 import com.cloud.application.service.UserService;
 import com.timgroup.statsd.StatsDClient;
+import com.cloud.application.*;
+import com.cloud.application.config.BadRequestException;
+import com.cloud.application.config.ForbiddenException;
 
 //@Component
 @RestController
