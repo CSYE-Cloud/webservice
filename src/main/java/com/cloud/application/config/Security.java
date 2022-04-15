@@ -43,6 +43,7 @@ public class Security extends WebSecurityConfigurerAdapter{
 	            .and()
 	            .authorizeRequests()
 	            .antMatchers(HttpMethod.POST, "/v1/user").permitAll()
+	            .antMatchers(HttpMethod.GET, "/v1/verifyUserEmail").permitAll()
 	            .antMatchers("/healthz").permitAll()
 	            .anyRequest()
 	            .authenticated()
