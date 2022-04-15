@@ -91,6 +91,7 @@ public class UserController {
 			logger.info("checking if user is present");
 			logger.info("user  ==== ", user.toString()); 
 			if (u.isPresent()) {
+				logger.info("wtf");
 				throw new BadRequestException();
 			}
 
@@ -299,7 +300,7 @@ public class UserController {
 			        Item item = userEmailsTable.getItem("emailID",userEmail);
 			        System.out.println("item= "+item);
 			        if (item == null ) {
-			        	result="token expired item not present";
+			        	result="token is expired";
 			        }else {
 			        	//if token expired
 			        	BigDecimal tokentimeExpiry=(BigDecimal)item.get("TimeToLive");
@@ -378,7 +379,7 @@ public class UserController {
 				 u.setVerified_on( OffsetDateTime.now(Clock.systemUTC()).toString());
 				 u.setAccountUpdated(OffsetDateTime.now(Clock.systemUTC()).toLocalDateTime());
 				 userRepository.save(u);
-				 System.out.println("user fields save success");
+				 System.out.println("Successfully saved.");
 //			 }
 //			 else {
 //				 System.out.println("error update verify user fields");
