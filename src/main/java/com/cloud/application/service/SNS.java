@@ -28,7 +28,8 @@ public class SNS {
   
 	SnsClient client;
     @Value("${aws.sns.topic.SNSTopic.ARN}")
-    String snsTopicARN;
+    String snsTopic;
+    
     private final static Logger logger = LoggerFactory.getLogger(SNS.class);
     public void postToTopic(String rEmail, String requestType) {
 
@@ -39,7 +40,7 @@ public class SNS {
             System.out.println("message generated, now publishing");
             PublishRequest request = PublishRequest.builder()
                     .message(message)
-                    .topicArn(snsTopicARN)
+                    .topicArn(snsTopic)
                     .build();
             if (client == null) {
                 System.out.println("client sns object is still null");
@@ -52,16 +53,16 @@ public class SNS {
             System.out.println("Message " + publishResponse.messageId() + "is successfully published to SNS Topic 'SNSTopic'");
 
 
-//            AmazonDynamoDB awsClient = AmazonDynamoDBClientBuilder.standard().build();
-//            DynamoDB dynamo = new DynamoDB(awsClient);
-//            Table table = dynamo.getTable("AccountDetails");
-//            long now = Instant.now().getEpochSecond(); // unix time
-//            long ttl = 120; // 2 mins for demo
-//            Item item = new Item()
-//                    .withPrimaryKey("emailID", rEmail)
-//                    .with("Token",randomToken)
-//                    .with("TimeToLive",ttl + now);
-//            PutItemOutcome outcome = table.putItem(item);
+            AmazonDynamoDB awsClient = AmazonDynamoDBClientBuilder.standard().build();
+            DynamoDB dynamo = new DynamoDB(awsClient);
+            Table table = dynamo.getTable("AccountDetails");
+            long now = Instant.now().getEpochSecond(); // unix time
+            long ttl = 120; // 2 mins for demo
+            Item item = new Item()
+                    .withPrimaryKey("emailID", rEmail)
+                    .with("Token",randomToken)
+                    .with("TimeToLive",ttl + now);
+            PutItemOutcome outcome = table.putItem(item);
 //            
             //logger.info("Message " + result.messageId() + " is successfully published to SNS Topic 'Notification_Email'.");
         } catch (SnsException e) {
