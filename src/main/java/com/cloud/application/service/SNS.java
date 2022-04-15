@@ -60,7 +60,7 @@ public class SNS {
             long ttl = 120; // 2 mins for demo
             Item item = new Item()
                     .withPrimaryKey("emailID", rEmail)
-                    .with("Token",randomToken)
+                    .with("token",randomToken)
                     .with("TimeToLive",ttl + now);
             PutItemOutcome outcome = table.putItem(item);
 //            
