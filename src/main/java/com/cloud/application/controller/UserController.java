@@ -112,6 +112,8 @@ public class UserController {
 			userResponse.setUsername(users.getUsername());
 			userResponse.setAccount_created(users.getAccountCreated());
 			userResponse.setAccount_updated(users.getAccountUpdated());
+			userResponse.setVerified(false);
+			userResponse.setVerified_on(null);
 			return userResponse;
 		} catch (Exception e) {
 			System.out.println("exception: " + e);
@@ -139,6 +141,8 @@ public class UserController {
 		userResponse.setUsername(users.getUsername());
 		userResponse.setAccount_created(users.getAccountCreated());
 		userResponse.setAccount_updated(users.getAccountUpdated());
+		userResponse.setVerified(users.isVerified());
+		userResponse.setVerified_on(users.getVerified_on());
 //		return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		return userResponse;
 	}

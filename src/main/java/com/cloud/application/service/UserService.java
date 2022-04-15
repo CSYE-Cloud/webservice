@@ -63,6 +63,7 @@ public class UserService implements UserDetailsService {
 		response.setFirstName(request.getFirstName());
 		response.setLastName(request.getLastName());
 		response.setUsername(username);
+		response.setVerified(true);
 		
 		 return response;
 	}

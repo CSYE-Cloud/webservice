@@ -55,16 +55,16 @@ public class SNS {
             System.out.println("Message " + publishResponse.messageId() + "is successfully published to SNS Topic 'SNSTopic'");
 
             logger.info("here 1 ===");
-            AmazonDynamoDB awsClient = AmazonDynamoDBClientBuilder.standard().build();
-            DynamoDB dynamo = new DynamoDB(awsClient);
-            Table table = dynamo.getTable("AccountDetails");
-            long now = Instant.now().getEpochSecond(); // unix time
-            long ttl = 120; // 2 mins for demo
-            Item item = new Item()
-                    .withPrimaryKey("emailID", rEmail)
-                    .with("Token",randomToken)
-                    .with("TimeToLive",ttl + now);
-            PutItemOutcome outcome = table.putItem(item);
+//            AmazonDynamoDB awsClient = AmazonDynamoDBClientBuilder.standard().build();
+//            DynamoDB dynamo = new DynamoDB(awsClient);
+//            Table table = dynamo.getTable("AccountDetails");
+//            long now = Instant.now().getEpochSecond(); // unix time
+//            long ttl = 120; // 2 mins for demo
+//            Item item = new Item()
+//                    .withPrimaryKey("emailID", rEmail)
+//                    .with("Token",randomToken)
+//                    .with("TimeToLive",ttl + now);
+//            PutItemOutcome outcome = table.putItem(item);
 ////            
             logger.info("Message  is successfully published to SNS Topic 'Notification_Email'.");
         } catch (SnsException e) {

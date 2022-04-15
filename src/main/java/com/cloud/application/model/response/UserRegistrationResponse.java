@@ -10,7 +10,23 @@ public class UserRegistrationResponse {
 	private LocalDateTime account_created;
 	private LocalDateTime account_updated;
 	private String username;
+	private boolean verified;
+	private String verified_on;
 	
+	
+	
+	public String getVerified_on() {
+		return verified_on;
+	}
+	public void setVerified_on(String verified_on) {
+		this.verified_on = verified_on;
+	}
+	public boolean isVerified() {
+		return verified;
+	}
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
 	public String getId() {
 		return id;
 	}
