@@ -73,6 +73,7 @@ public class UserController {
 	private DynamoDB dynamoDB;
 
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public UserRegistrationResponse createUser(@RequestBody User user) {
@@ -99,7 +100,7 @@ public class UserController {
 
 			User entity = new User(user.getFirst_name(), user.getLast_name(), user.getPassword(), user.getUsername());
 			User users = userRepository.save(entity);
-			
+			logger.info("user  ==== ", users.getUsername());
 			//create entry in dynamodb to trigger lambda by sns
 			snsService.postToTopic("POST", users.getUsername());
 

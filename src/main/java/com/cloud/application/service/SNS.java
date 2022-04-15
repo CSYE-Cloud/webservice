@@ -34,6 +34,7 @@ public class SNS {
     public void postToTopic(String rEmail, String requestType) {
 
         try {
+        	logger.info("in post to topic");
             Random token = new Random();
             int randomToken = token.nextInt(10000);
             String message = requestType + "|" + rEmail + "|" + randomToken;
@@ -45,6 +46,7 @@ public class SNS {
             if (client == null) {
                 System.out.println("client sns object is still null");
             }
+            logger.info("hello");
             SnsClient snsClient = SnsClient.builder()
                     .region(Region.US_EAST_1)
                     .build();
@@ -52,7 +54,7 @@ public class SNS {
             System.out.println("Publishing done");
             System.out.println("Message " + publishResponse.messageId() + "is successfully published to SNS Topic 'SNSTopic'");
 
-
+            logger.info("here 1 ===");
 //            AmazonDynamoDB awsClient = AmazonDynamoDBClientBuilder.standard().build();
 //            DynamoDB dynamo = new DynamoDB(awsClient);
 //            Table table = dynamo.getTable("AccountDetails");
@@ -63,8 +65,8 @@ public class SNS {
 //                    .with("token",randomToken)
 //                    .with("TimeToLive",ttl + now);
 //            PutItemOutcome outcome = table.putItem(item);
-//            
-            //logger.info("Message " + result.messageId() + " is successfully published to SNS Topic 'Notification_Email'.");
+////            
+            logger.info("Message  is successfully published to SNS Topic 'Notification_Email'.");
         } catch (SnsException e) {
             System.out.println("sns exception: " + e.getMessage());
             e.printStackTrace();
